@@ -1,1 +1,9 @@
 python mssqlclient.py -aesKey 256 -p 1433 -db volume htb.local.host/reporting:PcwTWTHRwryjc$c6@10.10.10.125
+
+root@kali:~/Downloads# python mssqlclient.py reporting@10.10.10.125
+Impacket v0.9.19 - Copyright 2019 SecureAuth Corporation
+
+Password:
+[*] Encryption required, switching to TLS
+[-] ERROR(QUERIER): Line 1: Login failed for user 'reporting'.
+
