@@ -1,0 +1,1 @@
+python mssqlclient.py -aesKey 256 -p 1433 -db volume htb.local.host/reporting:PcwTWTHRwryjc$c6@10.10.10.125
