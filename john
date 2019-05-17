@@ -1,0 +1,1 @@
+john --format=netlmv2 quereir.ntlmv2  /usr/share/wordlists/rockyou.txt 
