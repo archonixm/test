@@ -15,3 +15,71 @@ Once you have a list of valid ports from masscan, you can feed them to nmap for 
 nmap -sV -p80,443,3306 10.10.10.x
 
 That's it! Waaaaaay faster than a regular nmap scan at T5. Just note that you should not go above 1000pps with masscan, as it can miss ports if it is set too high. If you find masscan is missing ports, try lowering your scan rate to 200-300. This generally is caused by a low quality or low speed connection to the VPN.
+
+
+nmblookup
+nmblookup is used to query NetBIOS names and map them to IP addresses in a network using NetBIOS over TCP/IP queries. The options allow the name queries to be directed at a particular IP broadcast area or to a particular machine. All queries are done over UDP.
+
+nmblookup -A 192.168.1.103
+
+nbtscan
+This is a command utility that tries to scan NetBIOS name servers open on a local or remote TCP/IP network and because it is a first step in finding open shares. It is created on the functionality of the Windows standard tool “nbtstat”, and it works on a whole subnet instead of individual IP.
+nbtscan 192.168.1.1/24
+As you can observe it has dumped almost the same result as above, but the most important fact is that it enumerates the whole subnet.
+ 
+SMBMap
+SMBMap allows users to enumerate samba share drives across an entire domain. List share drives, drive permissions, share contents, upload/download functionality, file name auto-download pattern matching, and even execute remote commands. This tool was designed with pen testing in mind and is intended to simplify searching for potentially sensitive data across large networks.
+
+smbmap -H 192.168.1.102
+smbmap -H 192.168.1.102 -d metasploitable -u msfadmin -p msfadmin
+
+Smbclient
+smbclient is a client that can ‘talk’ to an SMB/CIFS server. It offers an interface similar to that of the FTP program. Operations include things like getting files from the server to the local machine, putting files from the local machine to the server, retrieving directory information from the server and so on.
+
+smbclient -L 192.168.1.102
+smbclient //192.168.1.102/tmp
+
+As you can observe with the help of smbclient we are able to view the shared folder of victim’s machine. Moreover, we can use smbclient for sharing the file in the network. Here you can observe we had login successfully using anonymous login and transferred the user.txt file.
+
+Rpcclient
+rpcclient is a utility initially developed to test MS-RPC functionality in Samba itself. It has undergone several stages of development and stability. Many system administrators have now written scripts around it to manage Windows NT clients from their UNIX workstation.
+
+We can use rpcclient to open an authenticated SMB session to a target machine by running the below command on our system where we have used a NULL Session, as we have entered a username of “”.
+
+rpcclient -U "" -N 192.168.1.102
+enumdomusers
+
+We have to use the queryuser command to catch-all kinds of information related to an individual user based uniquely on the users RID in hex form, here RID: 0x3e8 denotes root user account.
+
+queryuser 0x3e8
+
+Here note that the output result shows the last logon time for the user root, as well as the Password last set Time. Such kind of things is very valuable for penetration testers. And, this all can be achieved without an admin username and password.
+
+Nmap
+Following Script attempts to detect if a Microsoft SMBv1 server is vulnerable to a remote code execution vulnerability (ms17-010, a.k.a. EternalBlue). The vulnerability is actively exploited by WannaCry and Petya ransomware and other malware.
+
+nmap --script smb-vuln* -p 139,445 192.168.1.103
+
+The script connects to the $IPC tree, executes a transaction on FID 0 and checks if the error “STATUS_INSUFF_SERVER_RESOURCES” is returned to determine if the target is not patched against ms17-010. Additionally, it checks for known error codes returned by patched systems.
+
+From the given below image you can observe, it found the target machine is vulnerable to ms17-010 due to SMBv1.
+
+Enum4linux
+Enum4linux is a tool for enumerating information from Windows and Samba systems. It attempts to offer similar functionality to enum.exe formerly available from www.bindview.com.
+
+It is written in Perl and is basically a wrapper around the Samba tools smbclient, rpclient, net, and nmblookup.
+
+Key features:
+
+RID cycling (When RestrictAnonymous is set to 1 on Windows 2000)
+User listing (When RestrictAnonymous is set to 0 on Windows 2000)
+Listing of group membership information
+Share enumeration
+Detecting if the host is in a workgroup or a domain
+Identifying the remote operating system
+Password policy retrieval
+
+enum4linux -a 192.168.1.102
+
+Also, perform enumerate user along with their RID in hexadecimal form with the help of rpcclient. Hence enum4linux is Swiss-knife when it comes to performing enumeration. But it cannot identify SMB vulnerability like Nmap.
+
