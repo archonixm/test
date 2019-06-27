@@ -5,3 +5,16 @@ Once you’ve got command execution, there’s a good chance you will want to tr
 First things first — you need to find a directory you can write to. The first places to look are /tmp or /dev/shm but if that doesn’t work for you, this command should find writeable directories:
 
 find / -type d \( -perm -g+w -or -perm -o+w \) -exec ls -adl {} \;
+
+
+finding writeable files in windows
+dir /a-r-d /s /b
+
+dir /a-r-d /s /b >writeablefiles.txt
+
+Writable directory
+Get-ChildItem C:\temp\ -Recurse | Get-Acl | grep "Everyone"
+
+OR
+
+Get-ChildItem -Recurse | Get-Acl | out-string -stream | select-string -pattern "everyone"
