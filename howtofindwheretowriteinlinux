@@ -1,0 +1,7 @@
+File transfer methods — Linux
+
+Once you’ve got command execution, there’s a good chance you will want to transfer files to the victim box.
+
+First things first — you need to find a directory you can write to. The first places to look are /tmp or /dev/shm but if that doesn’t work for you, this command should find writeable directories:
+
+find / -type d \( -perm -g+w -or -perm -o+w \) -exec ls -adl {} \;
