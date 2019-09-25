@@ -14,6 +14,27 @@ Once you have a list of valid ports from masscan, you can feed them to nmap for 
 
 nmap -sV -p80,443,3306 10.10.10.x
 
+nmap -sV -p- -A -T 4 10.11.1.14
+
+curl 
+
+I use curl to quickly check for a robots.txt file and see if there is any interesting dirs listed within it.
+
+root@kali:~/pentest/mr-robot# curl http://10.11.1.14/robots.txt
+User-agent: *
+fsocity.dic
+key-1-of-3.txt
+The robots.txt file has two directories listed within it, key-1-of-3.txt, and fsocity.dic (new version of fsociety?). These files are located inside the web server’s current root directory and I can use wget to download the files onto Kali.
+
+root@kali:~/pentest/mr-robot# wget 10.11.1.14/fsocity.dic
+--2017-06-06 08:34:58--  http://10.11.1.14/fsocity.dic
+Connecting to 10.11.1.14:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 7245381 (6.9M) [text/x-c]
+Saving to: ‘fsocity.dic’
+
+fsocity.dic         100%[===================>]   6.91M  --.-KB/s    in 0.06s   
+
 That's it! Waaaaaay faster than a regular nmap scan at T5. Just note that you should not go above 1000pps with masscan, as it can miss ports if it is set too high. If you find masscan is missing ports, try lowering your scan rate to 200-300. This generally is caused by a low quality or low speed connection to the VPN.
 
 
